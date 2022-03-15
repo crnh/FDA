@@ -40,8 +40,8 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     # input: src_img, trg_img
 
     # get fft of both source and target
-    fft_src = torch.fft.rfft( src_img.clone(), signal_ndim=2, onesided=False ) 
-    fft_trg = torch.fft.rfft( trg_img.clone(), signal_ndim=2, onesided=False )
+    fft_src = torch.fft.fft( src_img.clone(), dim=(1, 2) ) 
+    fft_trg = torch.fft.fft( trg_img.clone(), dim=(1, 2) )
 
     # extract amplitude and phase of both ffts
     amp_src, pha_src = extract_ampl_phase( fft_src.clone())
