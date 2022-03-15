@@ -3,6 +3,7 @@ import numpy as np
 
 def extract_ampl_phase(fft_im):
     # fft_im: size should be bx3xhxwx2
+      
     fft_amp = fft_im[:,:,:,:,0]**2 + fft_im[:,:,:,:,1]**2
     fft_amp = torch.sqrt(fft_amp)
     fft_pha = torch.atan2( fft_im[:,:,:,:,1], fft_im[:,:,:,:,0] )
@@ -40,11 +41,15 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     # input: src_img, trg_img
     print(src_img.shape)
     
-    img_ndim = img_src.dim()
+    img_ndim = src_img.dim()
 
     # get fft of both source and target
     fft_src = torch.fft.fftn( src_img.clone(), dim=(img_ndim - 2, img_ndim - 1) ) 
     fft_trg = torch.fft.fftn( trg_img.clone(), dim=(img_ndim - 2, img_ndim - 1) )
+    
+    # Change from complex numbers to additional dimension for real and imaginary part
+    fft_src = torch.view_as_real(fft_src)
+    fft_trg = torch.view_as_real(fft_trg)
 
     # extract amplitude and phase of both ffts
     amp_src, pha_src = extract_ampl_phase( fft_src.clone())
