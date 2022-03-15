@@ -40,8 +40,8 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     # input: src_img, trg_img
 
     # get fft of both source and target
-    fft_src = torch.rfft( src_img.clone(), signal_ndim=2, onesided=False ) 
-    fft_trg = torch.rfft( trg_img.clone(), signal_ndim=2, onesided=False )
+    fft_src = torch.fft.rfft( src_img.clone(), signal_ndim=2, onesided=False ) 
+    fft_trg = torch.fft.rfft( trg_img.clone(), signal_ndim=2, onesided=False )
 
     # extract amplitude and phase of both ffts
     amp_src, pha_src = extract_ampl_phase( fft_src.clone())
@@ -57,7 +57,7 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
 
     # get the recomposed image: source content, target style
     _, _, imgH, imgW = src_img.size()
-    src_in_trg = torch.irfft( fft_src_, signal_ndim=2, onesided=False, signal_sizes=[imgH,imgW] )
+    src_in_trg = torch.fft.irfft( fft_src_, signal_ndim=2, onesided=False, signal_sizes=[imgH,imgW] )
 
     return src_in_trg
 
