@@ -6,6 +6,7 @@ import os
 from data import CreateSrcDataLoader
 from data import CreateTrgDataLoader
 from model import CreateModel
+from torch.utils.tensorboard import SummaryWriter
 #import tensorboardX
 import torch.backends.cudnn as cudnn
 import torch
@@ -56,6 +57,9 @@ def main():
 
     mean_img = torch.zeros(1, 1)
     class_weights = Variable(CS_weights).cuda()
+
+    # Create TensorBoard writer
+    tensorboard_writer = SummaryWriter()
 
     _t['iter time'].tic()
     for i in range(start_iter, args.num_steps):
@@ -118,6 +122,10 @@ def main():
 
         loss_train += loss_seg_src.detach().cpu().numpy()
         loss_val   += loss_seg_trg.detach().cpu().numpy()
+
+        # Write losses to TensorBoard
+        tensorboard_writer.add_scalar("Loss", {"Train": loss_train}, i)
+        tensorboard_writer.add_scalar("Loss", {"Val": loss_val}, i)
 
         if (i+1) % args.save_pred_every == 0:
             print('taking snapshot ...')
