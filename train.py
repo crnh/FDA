@@ -71,11 +71,17 @@ def main():
             B, C, H, W = src_img.shape
             mean_img = IMG_MEAN.repeat(B,1,H,W)
 
+            print("Mean image adjusted")
+
         #-------------------------------------------------------------------#
 
         # 1. source to target, target to target
         src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
         trg_in_trg = trg_img
+
+        print(f"Mean image shape: {mean_img.shape}")
+        print(f"Source image shape: {src_img.shape}")
+        print(f"Target image shape: {trg_img.shape}")
 
         # 2. subtract mean
         src_img = src_in_trg.clone() - mean_img                                 # src, src_lbl
