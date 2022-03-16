@@ -73,7 +73,8 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     print(f"Source in target image data type: {src_in_trg.dtype}")
     print(f"Single value from new image: {src_in_trg[0, 0, 100, 100]}")
 
-    return src_in_trg
+    # Convert to real-valued tensor
+    return torch.real(src_in_trg)
 
 def FDA_source_to_target_np( src_img, trg_img, L=0.1 ):
     # exchange magnitude
