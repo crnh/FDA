@@ -80,8 +80,14 @@ def main():
         trg_in_trg = trg_img
 
         print(f"Mean image shape: {mean_img.shape}")
+
         print(f"Source image shape: {src_img.shape}")
+        print(f"Source in target image shape: {src_in_trg.shape}")
+
+
         print(f"Target image shape: {trg_img.shape}")
+        print(f"Target in target image shape: {trg_in_trg.shape}")
+        
 
         # 2. subtract mean
         src_img = src_in_trg.clone() - mean_img                                 # src, src_lbl
