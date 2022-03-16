@@ -13,6 +13,7 @@ import torch
 from torch.autograd import Variable
 from utils import FDA_source_to_target
 import scipy.io as sio
+import imageio
 
 IMG_MEAN = np.array((104.00698793, 116.66876762, 122.67891434), dtype=np.float32)
 IMG_MEAN = torch.reshape( torch.from_numpy(IMG_MEAN), (1,3,1,1)  )
@@ -136,7 +137,10 @@ def main():
             print('[it %d][src seg loss %.4f][trg seg loss %.4f][lr %.4f][%.2fs]' % \
                     (i + 1, loss_seg_src.data, loss_seg_trg.data, optimizer.param_groups[0]['lr']*10000, _t['iter time'].diff) )
 
-            sio.savemat(args.tempdata, {'src_img':src_img.cpu().numpy(), 'trg_img':trg_img.cpu().numpy()})
+            
+            imageio.imwrite(f"{args.tempdata}/src_img_{i}", src_img.cpu().numpy(), format="png")
+            imageio.imwrite(f"{args.tempdata}/trg_img_{i}", trg_img.cpu().numpy(), format="png")
+            # sio.savemat(args.tempdata, {'src_img':src_img.cpu().numpy(), 'trg_img':trg_img.cpu().numpy()})
 
             loss_train /= args.print_freq
             loss_val   /= args.print_freq
