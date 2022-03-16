@@ -39,7 +39,7 @@ def low_freq_mutate_np( amp_src, amp_trg, L=0.1 ):
 def FDA_source_to_target(src_img, trg_img, L=0.1):
     # exchange magnitude
     # input: src_img, trg_img
-    print(src_img.shape)
+    # print(src_img.shape)
     
     img_ndim = src_img.dim()
 
@@ -70,8 +70,8 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     _, _, imgH, imgW = src_img.size()
     src_in_trg = torch.fft.ifftn( fft_src_, dim=(img_ndim - 2, img_ndim - 1), s=(imgH,imgW) )
 
-    print(f"Source in target image data type: {src_in_trg.dtype}")
-    print(f"Single value from new image: {src_in_trg[0, 0, 100, 100]}")
+    # print(f"Source in target image data type: {src_in_trg.dtype}")
+    # print(f"Single value from new image: {src_in_trg[0, 0, 100, 100]}")
 
     # Convert to real-valued tensor
     return torch.real(src_in_trg)

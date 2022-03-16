@@ -71,7 +71,7 @@ def main():
             B, C, H, W = src_img.shape
             mean_img = IMG_MEAN.repeat(B,1,H,W)
 
-            print("Mean image adjusted")
+            # print("Mean image adjusted")
 
         #-------------------------------------------------------------------#
 
@@ -79,14 +79,14 @@ def main():
         src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
         trg_in_trg = trg_img
 
-        print(f"Mean image shape: {mean_img.shape}")
+        # print(f"Mean image shape: {mean_img.shape}")
 
-        print(f"Source image shape: {src_img.shape}")
-        print(f"Source in target image shape: {src_in_trg.shape}")
+        # print(f"Source image shape: {src_img.shape}")
+        # print(f"Source in target image shape: {src_in_trg.shape}")
 
 
-        print(f"Target image shape: {trg_img.shape}")
-        print(f"Target in target image shape: {trg_in_trg.shape}")
+        # print(f"Target image shape: {trg_img.shape}")
+        # print(f"Target in target image shape: {trg_in_trg.shape}")
         
 
         # 2. subtract mean
