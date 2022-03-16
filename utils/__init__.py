@@ -63,9 +63,15 @@ def FDA_source_to_target(src_img, trg_img, L=0.1):
     fft_src_[:,:,:,:,0] = torch.cos(pha_src.clone()) * amp_src_.clone()
     fft_src_[:,:,:,:,1] = torch.sin(pha_src.clone()) * amp_src_.clone()
 
+    # Change back from additional dimension for real and imaginary part to complex numbers
+    fft_src_ = torch.view_as_complex(fft_src_)
+
     # get the recomposed image: source content, target style
     _, _, imgH, imgW = src_img.size()
-    src_in_trg = torch.fft.ifftn( fft_src_, dim=(img_ndim - 2, img_ndim - 1), s=[imgH,imgW] )
+    src_in_trg = torch.fft.ifftn( fft_src_, dim=(img_ndim - 2, img_ndim - 1), s=(imgH,imgW) )
+
+    print(f"Source in target image data type: {src_in_trg.dtype}")
+    print(f"Single value from new image: {src_in_trg[0, 0, 100, 100]}")
 
     return src_in_trg
 
