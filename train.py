@@ -125,8 +125,8 @@ def main():
         loss_val   += loss_seg_trg.detach().cpu().numpy()
 
         # Write losses to TensorBoard
-        tensorboard_writer.add_scalar("Loss", {"Train": loss_train}, i)
-        tensorboard_writer.add_scalar("Loss", {"Val": loss_val}, i)
+        tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
+        tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
 
         if (i+1) % args.save_pred_every == 0:
             print('taking snapshot ...')
