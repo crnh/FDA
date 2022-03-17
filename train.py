@@ -145,7 +145,7 @@ def main():
             tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
             tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
 
-            tensorboard_writer.add_images("Train", torch.tensor([src_img[0], trg_img[0]], i))
+            # tensorboard_writer.add_images("Train", torch.tensor([src_img[0], trg_img[0]], i))
 
             # loss_train_list.append(loss_train)
             # loss_val_list.append(loss_val)
