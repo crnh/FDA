@@ -137,9 +137,9 @@ def main():
             print('[it %d][src seg loss %.4f][trg seg loss %.4f][lr %.4f][%.2fs]' % \
                     (i + 1, loss_seg_src.data, loss_seg_trg.data, optimizer.param_groups[0]['lr']*10000, _t['iter time'].diff) )
 
-            
-            imageio.imwrite(f"{args.tempdata}/src_img_{i}", src_img.cpu().numpy()[0], format="png")
-            imageio.imwrite(f"{args.tempdata}/trg_img_{i}", trg_img.cpu().numpy()[0], format="png")
+            print(f"Image shape: {src_img.shape}")
+            imageio.imwrite(f"{args.tempdata}/src_img_{i}", src_img.cpu().numpy()[0].transpose((1, 2, 0)), format="png")
+            imageio.imwrite(f"{args.tempdata}/trg_img_{i}", trg_img.cpu().numpy()[0].transpose((1, 2, 0)), format="png")
             # sio.savemat(args.tempdata, {'src_img':src_img.cpu().numpy(), 'trg_img':trg_img.cpu().numpy()})
 
             loss_train /= args.print_freq
