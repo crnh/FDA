@@ -124,10 +124,6 @@ def main():
         loss_train += loss_seg_src.detach().cpu().numpy()
         loss_val   += loss_seg_trg.detach().cpu().numpy()
 
-        # Write losses to TensorBoard
-        tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
-        tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
-
         if (i+1) % args.save_pred_every == 0:
             print('taking snapshot ...')
             torch.save( model.state_dict(), os.path.join(args.snapshot_dir, '%s_' % (args.source) + str(i+1) + '.pth') )
@@ -144,9 +140,16 @@ def main():
 
             loss_train /= args.print_freq
             loss_val   /= args.print_freq
-            loss_train_list.append(loss_train)
-            loss_val_list.append(loss_val)
-            sio.savemat( args.matname, {'loss_train':loss_train_list, 'loss_val':loss_val_list} )
+
+            # Write losses to TensorBoard
+            tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
+            tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
+
+            tensorboard_writer.add_images("Train", torch.tensor([src_img[0], trg_img[0]], i))
+
+            # loss_train_list.append(loss_train)
+            # loss_val_list.append(loss_val)
+            # sio.savemat( args.matname, {'loss_train':loss_train_list, 'loss_val':loss_val_list} )
             loss_train = 0.0
             loss_val = 0.0
 
