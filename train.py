@@ -15,6 +15,8 @@ from utils import FDA_source_to_target
 import scipy.io as sio
 import imageio
 
+from time import perf_counter
+
 IMG_MEAN = np.array((104.00698793, 116.66876762, 122.67891434), dtype=np.float32)
 IMG_MEAN = torch.reshape( torch.from_numpy(IMG_MEAN), (1,3,1,1)  )
 CS_weights = np.array( (1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
@@ -67,6 +69,8 @@ def main():
         model.adjust_learning_rate(args, optimizer, i)                               # adjust learning rate
         optimizer.zero_grad()                                                        # zero grad
 
+        time_dataloading_start = perf_counter()
+
         src_img, src_lbl, _, _ = sourceloader_iter.next()                            # new batch source
         trg_img, trg_lbl, _, _ = targetloader_iter.next()                            # new batch target
 
@@ -78,11 +82,17 @@ def main():
 
             # print("Mean image adjusted")
 
+        time_dataloading_stop = perf_counter()
+        print(f"Data loading took {time_dataloading_stop - time_dataloading_start} s")        
+
         #-------------------------------------------------------------------#
 
         # 1. source to target, target to target
+        time_fda_start = perf_counter()
         src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
         trg_in_trg = trg_img
+        time_fda_stop = perf_counter()
+        print(f"FDA took {time_fda_stop - time_fda_start} s")        
 
         # print(f"Mean image shape: {mean_img.shape}")
 
@@ -118,8 +128,11 @@ def main():
 
         loss_all = loss_seg_src + triger_ent * args.entW * loss_ent_trg     # loss of seg on src, and ent on s and t
 
+        time_network_start = perf_counter()
         loss_all.backward()
         optimizer.step()
+        time_network_stop = perf_counter()
+        print(f"Training step took {time_network_stop - time_network_start} s")        
 
         loss_train += loss_seg_src.detach().cpu().numpy()
         loss_val   += loss_seg_trg.detach().cpu().numpy()
