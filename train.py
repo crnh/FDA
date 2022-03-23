@@ -28,7 +28,12 @@ def main():
     opt = TrainOptions()
     args = opt.initialize()
     os.environ["CUDA_VISIBLE_DEVICES"] = args.GPU
-    _t = {'iter time' : Timer()}
+    _t = {
+        'iter time' : Timer(),
+        'data loading': Timer(),
+        'fda': Timer(),
+        'optimizer step': Timer()
+    }
 
     model_name = args.source + '_to_' + args.target
     if not os.path.exists(args.snapshot_dir):
@@ -69,12 +74,14 @@ def main():
         model.adjust_learning_rate(args, optimizer, i)                               # adjust learning rate
         optimizer.zero_grad()                                                        # zero grad
 
-        time_dataloading_start = perf_counter()
+        _t['data loading'].tic()
 
         src_img, src_lbl, _, _ = sourceloader_iter.next()                            # new batch source
         trg_img, trg_lbl, _, _ = targetloader_iter.next()                            # new batch target
 
         scr_img_copy = src_img.clone()
+
+        _t['data loading'].toc()
 
         if mean_img.shape[-1] < 2:
             B, C, H, W = src_img.shape
@@ -87,12 +94,12 @@ def main():
 
         #-------------------------------------------------------------------#
 
+        _t['fda'].tic()
         # 1. source to target, target to target
         time_fda_start = perf_counter()
         src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
         trg_in_trg = trg_img
-        time_fda_stop = perf_counter()
-        print(f"FDA took {time_fda_stop - time_fda_start} s")        
+        _t['fda'].toc()
 
         # print(f"Mean image shape: {mean_img.shape}")
 
@@ -109,6 +116,8 @@ def main():
         trg_img = trg_in_trg.clone() - mean_img                                 # trg, trg_lbl
 
         #-------------------------------------------------------------------#
+
+        _t['optimizer step'].tic()
 
         # evaluate and update params #####
         src_img, src_lbl = Variable(src_img).cuda(), Variable(src_lbl.long()).cuda() # to gpu
@@ -133,6 +142,8 @@ def main():
         optimizer.step()
         time_network_stop = perf_counter()
         print(f"Training step took {time_network_stop - time_network_start} s")        
+
+        _t['optimizer step'].toc()
 
         loss_train += loss_seg_src.detach().cpu().numpy()
         loss_val   += loss_seg_trg.detach().cpu().numpy()
@@ -170,6 +181,10 @@ def main():
                 print('finish training')
                 break
             _t['iter time'].tic()
+
+    print("Average time per iteration part:")
+    for k, v in _t.items():
+        print(f'{k}: {v.average_time:.3f} s')
 
 if __name__ == '__main__':
     main()

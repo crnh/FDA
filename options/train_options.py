@@ -20,6 +20,7 @@ class TrainOptions():
         parser.add_argument("--data-list-target", type=str, default='./dataset/cityscapes_list/train.txt', help="list of images in the target dataset.")
         parser.add_argument("--set", type=str, default='train', help="choose adaptation set.")
         parser.add_argument("--label-folder", type=str, default=None, help="Path to the directory containing the pseudo labels.")
+        parser.add_argument("--downsample", type=int, default=None, help="Factor for downsampling the input images")
 
         parser.add_argument("--batch-size", type=int, default=1, help="input batch size.")
         parser.add_argument("--num-steps", type=int, default=150000, help="Number of training steps.")
