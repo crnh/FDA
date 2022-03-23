@@ -173,8 +173,9 @@ def main():
                 break
             _t['iter time'].tic()
 
+    print("Average time per iteration part:")
     for k, v in _t.items():
-        print(f'{k}: {v:.3f} s')
+        print(f'{k}: {v.average_time:.3f} s')
 
 if __name__ == '__main__':
     main()
