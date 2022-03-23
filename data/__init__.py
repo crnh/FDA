@@ -12,7 +12,7 @@ cs_size_test = {'cityscapes': (1344,576)}
 
 def downsample(size: tuple, factor: int):
     """Helper function that applies a downsampling factor on a size tuple."""
-    return tuple(s // factor for s in size) if factor is not None else s
+    return tuple(s // factor for s in size) if factor is not None else size
 
 def CreateSrcDataLoader(args):
     if args.source == 'gta5':
