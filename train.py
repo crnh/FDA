@@ -111,7 +111,7 @@ def main():
 
         #-------------------------------------------------------------------#
 
-        _t['step'].tic()
+        _t['optimizer step'].tic()
 
         # evaluate and update params #####
         src_img, src_lbl = Variable(src_img).cuda(), Variable(src_lbl.long()).cuda() # to gpu
@@ -134,7 +134,7 @@ def main():
         loss_all.backward()
         optimizer.step()
 
-        _t['step'].toc()
+        _t['optimizer step'].toc()
 
         loss_train += loss_seg_src.detach().cpu().numpy()
         loss_val   += loss_seg_trg.detach().cpu().numpy()
