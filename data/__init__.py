@@ -17,12 +17,12 @@ def downsample(size: tuple, factor: int):
 def CreateSrcDataLoader(args):
     if args.source == 'gta5':
 
-        source_dataset = GTA5DataSet( args.data_dir, args.data_list, crop_size=downsample(image_sizes['cityscapes']), 
-                                      resize=down_sample(image_sizes['gta5']) ,mean=IMG_MEAN,
+        source_dataset = GTA5DataSet( args.data_dir, args.data_list, crop_size=downsample(image_sizes['cityscapes'], args.downsample), 
+                                      resize=downsample(image_sizes['gta5'], args.downsample) ,mean=IMG_MEAN,
                                       max_iters=args.num_steps * args.batch_size )
     elif args.source == 'synthia':
-        source_dataset = SYNDataSet( args.data_dir, args.data_list, crop_size=downsample(image_sizes['cityscapes']),
-                                      resize=downsample(image_sizes['synthia']) ,mean=IMG_MEAN,
+        source_dataset = SYNDataSet( args.data_dir, args.data_list, crop_size=downsample(image_sizes['cityscapes'], args.downsample),
+                                      resize=downsample(image_sizes['synthia'], args.downsample) ,mean=IMG_MEAN,
                                       max_iters=args.num_steps * args.batch_size )
     else:
         raise ValueError('The source dataset mush be either gta5 or synthia')
@@ -38,14 +38,14 @@ def CreateTrgDataLoader(args):
     if args.set == 'train' or args.set == 'trainval':
         target_dataset = cityscapesDataSetLabel( args.data_dir_target, 
                                                  args.data_list_target, 
-                                                 crop_size=downsample(image_sizes['cityscapes']), 
+                                                 crop_size=downsample(image_sizes['cityscapes'], args.downsample), 
                                                  mean=IMG_MEAN, 
                                                  max_iters=args.num_steps * args.batch_size, 
                                                  set=args.set )
     else:
         target_dataset = cityscapesDataSet( args.data_dir_target,
                                             args.data_list_target,
-                                            crop_size=downsample(cs_size_test['cityscapes']),
+                                            crop_size=downsample(cs_size_test['cityscapes'], args.downsample),
                                             mean=IMG_MEAN,
                                             set=args.set )
 
