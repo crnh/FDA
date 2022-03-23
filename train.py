@@ -87,16 +87,12 @@ def main():
             B, C, H, W = src_img.shape
             mean_img = IMG_MEAN.repeat(B,1,H,W)
 
-            # print("Mean image adjusted")
-
-        time_dataloading_stop = perf_counter()
-        print(f"Data loading took {time_dataloading_stop - time_dataloading_start} s")        
+            # print("Mean image adjusted")      
 
         #-------------------------------------------------------------------#
 
         _t['fda'].tic()
         # 1. source to target, target to target
-        time_fda_start = perf_counter()
         src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
         trg_in_trg = trg_img
         _t['fda'].toc()
@@ -137,11 +133,8 @@ def main():
 
         loss_all = loss_seg_src + triger_ent * args.entW * loss_ent_trg     # loss of seg on src, and ent on s and t
 
-        time_network_start = perf_counter()
         loss_all.backward()
-        optimizer.step()
-        time_network_stop = perf_counter()
-        print(f"Training step took {time_network_stop - time_network_start} s")        
+        optimizer.step() 
 
         _t['optimizer step'].toc()
 
