@@ -23,4 +23,5 @@ python3 FDA/train.py \
     --data-list-target=$train_target_data_list \
     --num-steps=$num_steps \
     --print-freq=$print_freq \
-    --tempdata='output'
+    --tempdata='output' \
+    --downsample=2

@@ -6,6 +6,7 @@ class TrainOptions():
         parser = argparse.ArgumentParser( description="training script for FDA" )
         parser.add_argument("--model", type=str, default='DeepLab', help="available options : DeepLab and VGG")
         parser.add_argument("--LB", type=float, default=0.1, help="beta for FDA")
+        parser.add_argument("--shape", type=str, default="square", help="FDA patch shape. Options: square, circle, gaussian.")
         parser.add_argument("--GPU", type=str, default='0', help="which GPU to use")
         parser.add_argument("--entW", type=float, default=0.005, help="weight for entropy")
         parser.add_argument("--ita", type=float, default=2.0, help="ita for robust entropy")
