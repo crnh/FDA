@@ -36,10 +36,11 @@ class TrainOptions():
         parser.add_argument("--init-weights", type=str, default=None, help="initial model.")
         parser.add_argument("--restore-from", type=str, default=None, help="Where restore model parameters from.")
 
+        parser.add_argument("--experiment-name", type=str, default="unknown", help="Name of the experiment")
         parser.add_argument("--save-pred-every", type=int, default=2500, help="Save summaries and checkpoint every often.")
         parser.add_argument("--print-freq", type=int, default=100, help="print loss and time fequency.")
         parser.add_argument("--matname", type=str, default='loss_log.mat', help="mat name to save loss")
-        parser.add_argument("--tempdata", type=str, default='tempdata.mat', help="mat name to save data")
+        parser.add_argument("--tempdata", type=str, default='output', help="folder name to save data")
 
         return parser.parse_args()
     

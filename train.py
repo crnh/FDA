@@ -15,7 +15,7 @@ from utils import FDA_source_to_target
 import scipy.io as sio
 import imageio
 
-from time import perf_counter
+from datetime import datetime
 
 IMG_MEAN = np.array((104.00698793, 116.66876762, 122.67891434), dtype=np.float32)
 IMG_MEAN = torch.reshape( torch.from_numpy(IMG_MEAN), (1,3,1,1)  )
@@ -27,6 +27,7 @@ CS_weights = torch.from_numpy(CS_weights)
 def main():
     opt = TrainOptions()
     args = opt.initialize()
+
     os.environ["CUDA_VISIBLE_DEVICES"] = args.GPU
     _t = {
         'iter time' : Timer(),
@@ -36,9 +37,13 @@ def main():
     }
 
     model_name = args.source + '_to_' + args.target
-    if not os.path.exists(args.snapshot_dir):
-        os.makedirs(args.snapshot_dir)
-        os.makedirs(os.path.join(args.snapshot_dir, 'logs'))
+
+    experiment_name = f"{args.experiment_name}_{datetime.now().strftime('%Y-%m-%d_%H-%M')}"
+    snapshot_dir = os.path.join(args.snapshot_dir, experiment_name)
+
+    if not os.path.exists(snapshot_dir):
+        os.makedirs(snapshot_dir)
+        os.makedirs(os.path.join(snapshot_dir, 'logs'))
     opt.print_options(args)
 
     sourceloader, targetloader = CreateSrcDataLoader(args), CreateTrgDataLoader(args)
@@ -67,7 +72,7 @@ def main():
     class_weights = Variable(CS_weights).cuda()
 
     # Create TensorBoard writer
-    tensorboard_writer = SummaryWriter()
+    tensorboard_writer = SummaryWriter(log_dir=f"runs/{experiment_name}")
 
     _t['iter time'].tic()
     for i in range(start_iter, args.num_steps):
@@ -127,9 +132,7 @@ def main():
         loss_seg_trg = model.loss_seg                                                # get loss
         loss_ent_trg = model.loss_ent
 
-        triger_ent = 0.0
-        if i > args.switch2entropy:
-            triger_ent = 1.0
+        triger_ent = 1.0 if i > args.switch2entropy else 0.0
 
         loss_all = loss_seg_src + triger_ent * args.entW * loss_ent_trg     # loss of seg on src, and ent on s and t
 
@@ -143,16 +146,18 @@ def main():
 
         if (i+1) % args.save_pred_every == 0:
             print('taking snapshot ...')
-            torch.save( model.state_dict(), os.path.join(args.snapshot_dir, '%s_' % (args.source) + str(i+1) + '.pth') )
+            torch.save( model.state_dict(), os.path.join(snapshot_dir, '%s_' % (args.source) + str(i+1) + '.pth') )
             
         if (i+1) % args.print_freq == 0:
             _t['iter time'].toc(average=False)
             print('[it %d][src seg loss %.4f][trg seg loss %.4f][lr %.4f][%.2fs]' % \
                     (i + 1, loss_seg_src.data, loss_seg_trg.data, optimizer.param_groups[0]['lr']*10000, _t['iter time'].diff) )
 
-            print(f"Image shape: {src_img.shape}")
+            # print(f"Image shape: {src_img.shape}")
             imageio.imwrite(f"{args.tempdata}/src_img_{i}.png", src_img.cpu().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
             imageio.imwrite(f"{args.tempdata}/trg_img_{i}.png", trg_img.cpu().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
+            # print(trg_seg_score.shape)
+            # imageio.imwrite(f"{args.tempdata}/result_{i}.png", trg_seg_score.cpu().detach().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
             # sio.savemat(args.tempdata, {'src_img':src_img.cpu().numpy(), 'trg_img':trg_img.cpu().numpy()})
 
             loss_train /= args.print_freq
@@ -162,7 +167,8 @@ def main():
             tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
             tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
 
-            # tensorboard_writer.add_images("Train", torch.tensor([src_img[0], trg_img[0]], i))
+            # Write source and target images to Tensorboard
+            # tensorboard_writer.add_images("Images/Train", torch.cat((src_img.cpu()[None, 0, ...], trg_img.cpu()[None, 0, ...])), i)
 
             # loss_train_list.append(loss_train)
             # loss_val_list.append(loss_val)
