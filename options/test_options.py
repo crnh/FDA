@@ -13,6 +13,7 @@ class TestOptions():
         parser.add_argument("--restore-opt1", type=str, default=None, help="restore model parameters from beta1")
         parser.add_argument("--restore-opt2", type=str, default=None, help="restore model parameters from beta2")
         parser.add_argument("--restore-opt3", type=str, default=None, help="restore model parameters from beta3")
+        parser.add_argument("--downsample", type=int, default=None, help="Factor for downsampling the input images")
 
         parser.add_argument("--init-weights", type=str, default=None, help="initial model.")
         parser.add_argument("--restore-from", type=str, default=None, help="restore model parameters from")
