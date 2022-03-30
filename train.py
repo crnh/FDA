@@ -1,21 +1,22 @@
-import torch.nn.functional as F
-import numpy as np
-from options.train_options import TrainOptions
-from utils.timer import Timer
 import os
-from data import CreateSrcDataLoader
-from data import CreateTrgDataLoader
-from model import CreateModel
-from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
+
+import imageio
+import numpy as np
+import scipy.io as sio
+import sklearn.metrics as metrics
+import torch
 #import tensorboardX
 import torch.backends.cudnn as cudnn
-import torch
+import torch.nn.functional as F
 from torch.autograd import Variable
-from utils import FDA_source_to_target
-import scipy.io as sio
-import imageio
+from torch.utils.tensorboard import SummaryWriter
 
-from datetime import datetime
+from data import CreateSrcDataLoader, CreateTrgDataLoader
+from model import CreateModel
+from options.train_options import TrainOptions
+from utils import FDA_source_to_target
+from utils.timer import Timer
 
 IMG_MEAN = np.array((104.00698793, 116.66876762, 122.67891434), dtype=np.float32)
 IMG_MEAN = torch.reshape( torch.from_numpy(IMG_MEAN), (1,3,1,1)  )
@@ -157,6 +158,19 @@ def main():
             imageio.imwrite(f"{args.tempdata}/src_img_{i}.png", src_img.cpu().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
             imageio.imwrite(f"{args.tempdata}/trg_img_{i}.png", trg_img.cpu().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
             # print(trg_seg_score.shape)
+
+            # Source labels (ground truth), as flattened class array
+            src_lbl_np = src_lbl.cpu().numpy().flatten()
+            src_seg_score_np = src_seg_score.argmax(dim=1).cpu().numpy().flatten()
+
+            accuracy_src = metrics.jaccard_score(y_true=src_lbl_np, y_pred=src_seg_score_np, average="macro")
+
+            # Target labels (ground truth), as flattened class array
+            trg_lbl_np = trg_lbl.cpu().numpy().flatten()
+            trg_seg_score_np = trg_seg_score.argmax(dim=1).cpu().numpy().flatten()
+
+            accuracy_val = metrics.jaccard_score(y_true=trg_lbl_np, y_pred=trg_seg_score_np, average="macro")
+
             # imageio.imwrite(f"{args.tempdata}/result_{i}.png", trg_seg_score.cpu().detach().numpy()[0].transpose((1, 2, 0))[:, :, ::-1], format="png")
             # sio.savemat(args.tempdata, {'src_img':src_img.cpu().numpy(), 'trg_img':trg_img.cpu().numpy()})
 
@@ -166,6 +180,8 @@ def main():
             # Write losses to TensorBoard
             tensorboard_writer.add_scalar("Loss/Train", loss_train, i)
             tensorboard_writer.add_scalar("Loss/Val", loss_val, i)
+            tensorboard_writer.add_scalar("Accuracy/Train", accuracy_src, i)
+            tensorboard_writer.add_scalar("Accuracy/Val", accuracy_val, i)
 
             # Write source and target images to Tensorboard
             # tensorboard_writer.add_images("Images/Train", torch.cat((src_img.cpu()[None, 0, ...], trg_img.cpu()[None, 0, ...])), i)
