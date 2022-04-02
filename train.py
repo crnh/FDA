@@ -6,7 +6,6 @@ import numpy as np
 import scipy.io as sio
 import sklearn.metrics as metrics
 import torch
-#import tensorboardX
 import torch.backends.cudnn as cudnn
 import torch.nn.functional as F
 from torch.autograd import Variable

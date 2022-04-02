@@ -7,7 +7,7 @@ CITYSCAPES_LIST_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes")
 GTA5_PATH: Path = Path("/home/cornehaasjes/data/GTAV/images")
 GTA5_LIST_PATH: Path = Path("/home/cornehaasjes/data/GTAV")
 
-N: int = None #4000
+N: int = 10 # None #4000
 LIST_OUTPUT_NAME: str = f"val-{'all' if N is None else N}.txt"
 # GTA5_OUTPUT_NAME: str = f"train-{'all' if N is None else N}.txt"
 
