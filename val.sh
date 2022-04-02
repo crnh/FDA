@@ -6,12 +6,15 @@ checkpoint_folder="/home/cornehaasjes/checkpoints/FDA"
 # model_2_weights=$checkpoint_folder"/train_fullsize_batch1_it1000_2022-03-28_14-20/gta5_1000"
 # model_3_weights=$checkpoint_folder"/train_fullsize_batch1_it1000_2022-03-28_14-20/gta5_1000"
 
-model_1_weights=$checkpoint_folder"/train_fullsize_batch1_it38000_2022-03-31_08-24/gta5_38000"
+model_1_weights=$checkpoint_folder"/train_downsample2_batch1_it4000_2022-03-28_15-50/gta5_4000"
 
 val_target_data_directory=$data_folder"/Cityscapes/"
 val_target_data_list=$data_folder"/Cityscapes/val-all.txt"
 
-results_directory="/home/cornehaasjes/validation_results/long_run"
+results_directory="/home/cornehaasjes/validation_results/experiment2"
+
+# Create results directory
+mkdir $results_directory
 
 # Run training
 python3 FDA/evaluation_single.py \
@@ -22,5 +25,5 @@ python3 FDA/evaluation_single.py \
     --num-classes=19 \
     --restore-opt1=$model_1_weights \
     --save=$results_directory \
-    # --downsample=2 \
+    --downsample=2
     # >> '/home/cornehaasjes/checkpoints/FDA/'$experiment_name'/output.log'

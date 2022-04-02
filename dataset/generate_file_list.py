@@ -1,14 +1,14 @@
 from pathlib import Path
 from random import sample
 
-CITYSCAPES_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes/leftImg8bit/val")
+CITYSCAPES_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes/leftImg8bit/train")
 CITYSCAPES_LIST_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes")
 
 GTA5_PATH: Path = Path("/home/cornehaasjes/data/GTAV/images")
 GTA5_LIST_PATH: Path = Path("/home/cornehaasjes/data/GTAV")
 
-N: int = 10 # None #4000
-LIST_OUTPUT_NAME: str = f"val-{'all' if N is None else N}.txt"
+N: int = 12500 # None #4000
+LIST_OUTPUT_NAME: str = f"train-{'all' if N is None else N}.txt"
 # GTA5_OUTPUT_NAME: str = f"train-{'all' if N is None else N}.txt"
 
 cityscapes_images = [str(f.relative_to(CITYSCAPES_PATH)) for f in CITYSCAPES_PATH.glob("**/*.png")]
