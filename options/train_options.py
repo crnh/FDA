@@ -11,6 +11,7 @@ class TrainOptions():
         parser.add_argument("--entW", type=float, default=0.005, help="weight for entropy")
         parser.add_argument("--ita", type=float, default=2.0, help="ita for robust entropy")
         parser.add_argument("--switch2entropy", type=int, default=50000, help="switch to entropy after this many steps")
+        parser.add_argument("--seed", type=int, default=None, help="fixed random seed")
 
         parser.add_argument("--source", type=str, default='gta5', help="source dataset : gta5 or synthia")
         parser.add_argument("--target", type=str, default='cityscapes', help="target dataset : cityscapes")

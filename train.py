@@ -28,6 +28,11 @@ def main():
     opt = TrainOptions()
     args = opt.initialize()
 
+    # Set random seed
+    if args.seed is not None:
+        torch.manual_seed(args.seed)
+        np.random.seed(args.seed)
+
     os.environ["CUDA_VISIBLE_DEVICES"] = args.GPU
     _t = {
         'iter time' : Timer(),

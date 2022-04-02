@@ -14,6 +14,7 @@ print_freq=100
 save_freq=500
 fda_shape="circle"
 beta=0.09
+seed=3407
 
 # Create output directory
 mkdir 'output/'$experiment_name
@@ -28,6 +29,7 @@ python3 FDA/train.py \
     --entW=0.005 \
     --ita=2.0 \
     --switch2entropy=0 \
+    --seed=$seed \
     --data-dir=$train_data_directory \
     --data-list=$train_data_list \
     --data-dir-target=$train_target_data_directory \
