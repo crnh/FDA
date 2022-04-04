@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from functools import cache
+from functools import lru_cache
 
 ####################################################################################################################
 ### Old code ###
@@ -134,7 +134,7 @@ def centered_ifft(fft, s=None):
     return image
 
 
-@cache
+@lru_cache(maxsize=None)
 def circular_mask(h, w, beta_pixel):
     """
     Calculates a circular mask with height `h` and width `w`
@@ -151,7 +151,7 @@ def circular_mask(h, w, beta_pixel):
     return mask
 
 
-@cache
+@lru_cache(maxsize=None)
 def gaussian_mask(h, w, beta_pixel):
     """
     Calculates a gaussian mask with height `h` and width `w`
