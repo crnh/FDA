@@ -14,7 +14,7 @@ from torch.utils.tensorboard import SummaryWriter
 from data import CreateSrcDataLoader, CreateTrgDataLoader
 from model import CreateModel
 from options.train_options import TrainOptions
-from utils import FDA_source_to_target
+from utils import FDA_source_to_target, shape_FDA_source_to_target
 from utils.timer import Timer
 
 IMG_MEAN = np.array((104.00698793, 116.66876762, 122.67891434), dtype=np.float32)
@@ -103,7 +103,7 @@ def main():
 
         _t['fda'].tic()
         # 1. source to target, target to target
-        src_in_trg = FDA_source_to_target( src_img, trg_img, L=args.LB )            # src_lbl
+        src_in_trg = shape_FDA_source_to_target( src_img, trg_img, beta=args.LB, mask_type=args.shape )            # src_lbl
         trg_in_trg = trg_img
         _t['fda'].toc()
 

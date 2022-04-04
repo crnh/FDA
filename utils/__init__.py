@@ -247,7 +247,7 @@ def shape_low_freq_mutate(amp_src, amp_trg, beta, mask_type="circle"):
             "mask_type not recognised, please use 'rectangle', 'circle' or 'gaussian'"
         )
 
-def shape_FDA_source_to_target(src_img, trg_img, beta=0.1, mask_type="circle"):
+def shape_FDA_source_to_target(src_img, trg_img, beta=0.01, mask_type="circle"):
 
     img_ndim = src_img.dim()
 
