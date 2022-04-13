@@ -1,4 +1,4 @@
-data_folder="/home/cornehaasjes/data"
+data_folder=$HOME"/data"
 
 train_data_directory=$data_folder"/GTAV"
 train_data_list=$data_folder"/GTAV/train-10.txt"
@@ -14,8 +14,8 @@ experiment_name=test
 # Run training
 python3 FDA/train.py \
     --experiment-name=$experiment_name \
-    --snapshot-dir='/home/cornehaasjes/checkpoints/FDA/' \
-    --init-weights='/home/cornehaasjes/checkpoints/FDA/DeepLab_init.pth' \
+    --snapshot-dir=$HOME'/checkpoints/FDA/' \
+    --init-weights=$HOME'/checkpoints/FDA/DeepLab_init.pth' \
     --LB=0.01 \
     --entW=0.005 \
     --ita=2.0 \
@@ -29,4 +29,4 @@ python3 FDA/train.py \
     --save-pred-every=$save_freq \
     --tempdata='output'
     # --downsample=2 \
-    # >> '/home/cornehaasjes/checkpoints/FDA/'$experiment_name'/output.log'
+    # >> $HOME'/checkpoints/FDA/'$experiment_name'/output.log'

@@ -1,11 +1,11 @@
 from pathlib import Path
 from random import sample
 
-CITYSCAPES_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes/leftImg8bit/train")
-CITYSCAPES_LIST_PATH: Path = Path("/home/cornehaasjes/data/Cityscapes")
+CITYSCAPES_PATH: Path = Path("~/data/Cityscapes/leftImg8bit/train")
+CITYSCAPES_LIST_PATH: Path = Path("~/data/Cityscapes")
 
-GTA5_PATH: Path = Path("/home/cornehaasjes/data/GTAV/images")
-GTA5_LIST_PATH: Path = Path("/home/cornehaasjes/data/GTAV")
+GTA5_PATH: Path = Path("~/data/GTAV/images")
+GTA5_LIST_PATH: Path = Path("~/data/GTAV")
 
 N: int = 12500 # None #4000
 LIST_OUTPUT_NAME: str = f"train-{'all' if N is None else N}.txt"

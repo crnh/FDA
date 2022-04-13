@@ -1,4 +1,4 @@
-data_folder="/home/cornehaasjes/data"
+data_folder=$HOME"/data"
 
 train_data_directory=$data_folder"/GTAV"
 train_data_list=$data_folder"/GTAV/train-12500.txt"
@@ -22,8 +22,8 @@ mkdir 'output/'$experiment_name
 # Run training
 python3 FDA/train.py \
     --experiment-name=$experiment_name \
-    --snapshot-dir='/home/cornehaasjes/checkpoints/FDA/' \
-    --init-weights='/home/cornehaasjes/checkpoints/FDA/DeepLab_init.pth' \
+    --snapshot-dir=$HOME'/checkpoints/FDA/' \
+    --init-weights=$HOME'/checkpoints/FDA/DeepLab_init.pth' \
     --LB=$beta \
     --shape=$fda_shape \
     --entW=0.005 \
