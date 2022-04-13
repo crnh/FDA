@@ -1,4 +1,8 @@
-# FDA: Fourier Domain Adaptation for Semantic Segmentation.
+# TU Delft CS4240 Deep Learning Reproduction Project
+
+The code in this repository was used for a Deep Learning reproducibility project, as part of a Deep Learning course taught at Delft University of Technology, in 2022. The corresponding blog post can be found here: [to be inserted]. The original code was slightly modified; for an overview of our modifications, we refer to our blog post. What follows is the original documentation of the code belonging to the FDA paper.
+
+## FDA: Fourier Domain Adaptation for Semantic Segmentation.
 
 This is the Pytorch implementation of our [FDA](https://openaccess.thecvf.com/content_CVPR_2020/papers/Yang_FDA_Fourier_Domain_Adaptation_for_Semantic_Segmentation_CVPR_2020_paper.pdf) paper published in CVPR 2020.
 
@@ -12,7 +16,7 @@ Step 3: Apply inverse FFT to the modified source spectrum.
 
 ![Image of FDA](https://github.com/YanchaoYang/FDA/blob/master/demo_images/FDA.png)
 
-# Usage
+## Usage
 
 1. FDA Demo
    
