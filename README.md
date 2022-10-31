@@ -1,6 +1,6 @@
 # TU Delft CS4240 Deep Learning Reproduction Project
 
-The code in this repository was used for a Deep Learning reproducibility project, as part of a Deep Learning course taught at Delft University of Technology, in 2022. The corresponding blog post can be found here: [to be inserted]. The original code was slightly modified; for an overview of our modifications, we refer to our blog post. What follows is the original documentation of the code belonging to the FDA paper.
+The code in this repository was used for a Deep Learning reproducibility project, as part of a Deep Learning course taught at Delft University of Technology, in 2022. The corresponding blog post can be found [here](https://hackmd.io/@EJUiM8nbREq-Fy5Gpqsswg/B14jinFGc). The original code was slightly modified; for an overview of our modifications, we refer to our blog post. What follows is the original documentation of the code belonging to the FDA paper.
 
 ## FDA: Fourier Domain Adaptation for Semantic Segmentation.
 
